@@ -225,10 +225,10 @@
 
 <header>
   <div class="header-inner">
-    <div class="header-logo">🎓</div>
+    <div class="header-logo">C</div>
     <div class="header-text">
       <h1>College Admission Assistant</h1>
-      <p>AI-powered guide for eligibility, documents, fees, cutoffs &amp; step-by-step admission</p>
+      <p>Intelligent guide for eligibility, documents, fees, cutoffs &amp; admission processes</p>
     </div>
   </div>
 </header>
@@ -252,39 +252,38 @@
 <div class="chat-wrapper">
   <div id="chat-box">
     <div class="msg bot">
-      <div class="avatar">🤖</div>
+      <div class="avatar">A</div>
       <div>
         <div class="bubble">
-👋 Hello! I'm your College Admission Assistant.
+Hello! I am your College Admission Assistant.
 
 I can help you with:
-• 📋 Documents required for admission (Engineering / Medical / Commerce / Arts)
-• 💰 Fee structures — UG, PG &amp; scholarship info
-• ✅ Eligibility criteria &amp; entrance exam requirements
-• 🎓 Courses &amp; branches offered at each college
-• 📈 Cutoff ranks — JEE, NEET, CUET, CET
-• 🏆 Will my rank get me admitted? Just ask!
-• 🚶 Step-by-step admission checklist
-• ⭐ Placement ratings, faculty &amp; infrastructure scores
-• 📞 Contact details &amp; application deadlines
+- Documents required for admission (Engineering / Medical / Commerce / Arts)
+- Fee structures (UG, PG &amp; scholarship info)
+- Eligibility criteria &amp; entrance exam requirements
+- Courses &amp; branches offered at each college
+- Cutoff ranks (JEE, NEET, CUET, CET)
+- Rank-based admission predictions
+- Step-by-step admission checklists
+- Placement ratings, faculty &amp; infrastructure scores
+- Contact details &amp; application deadlines
 
 Try: "My JEE rank is 8500 — can I get CSE at NIT Trichy?"
-Or click a college pill above to get started!
+Or click a college pill above to get started.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Quick Prompts -->
   <div class="quick-prompts">
-    <span class="qp" onclick="sendQuick('What documents are needed for VIT Vellore admission?')">📋 VIT docs</span>
-    <span class="qp" onclick="sendQuick('What are the fees at IIT Delhi?')">💰 IIT Delhi fees</span>
-    <span class="qp" onclick="sendQuick('My JEE rank is 5000, can I get CSE at NIT Trichy?')">📈 Rank check NIT</span>
-    <span class="qp" onclick="sendQuick('What is the NEET cutoff for MBBS at SRM Institute?')">🏥 NEET cutoff SRM</span>
-    <span class="qp" onclick="sendQuick('How do I apply for BITS Pilani admission?')">🚶 BITS process</span>
-    <span class="qp" onclick="sendQuick('What are the placements at Anna University?')">🏢 Anna placements</span>
-    <span class="qp" onclick="sendQuick('Give me the admission checklist for engineering')">✅ Admission checklist</span>
-    <span class="qp" onclick="sendQuick('Which college should I choose with JEE rank 12000?')">🎓 Best college for rank</span>
+    <span class="qp" onclick="sendQuick('What documents are needed for VIT Vellore admission?')">VIT Docs</span>
+    <span class="qp" onclick="sendQuick('What are the fees at IIT Delhi?')">IIT Delhi Fees</span>
+    <span class="qp" onclick="sendQuick('My JEE rank is 5000, can I get CSE at NIT Trichy?')">Rank Check NIT</span>
+    <span class="qp" onclick="sendQuick('What is the NEET cutoff for MBBS at SRM Institute?')">NEET Cutoff SRM</span>
+    <span class="qp" onclick="sendQuick('How do I apply for BITS Pilani admission?')">BITS Process</span>
+    <span class="qp" onclick="sendQuick('What are the placements at Anna University?')">Anna Placements</span>
+    <span class="qp" onclick="sendQuick('Give me the admission checklist for engineering')">Admission Checklist</span>
+    <span class="qp" onclick="sendQuick('Which college should I choose with JEE rank 12000?')">Best College for Rank</span>
   </div>
 
   <!-- Input Row -->
@@ -301,7 +300,7 @@ Or click a college pill above to get started!
 </div>
 
 <footer>
-  ⚠️ Information is based on a curated dataset of 350 admission records across 12 colleges.
+  Note: Information is based on a curated dataset of 350 admission records across 12 colleges.
   Always verify with official college websites and admission portals for the latest updates.
 </footer>
 
@@ -328,7 +327,7 @@ Or click a college pill above to get started!
 
     const avatar = document.createElement("div");
     avatar.className = "avatar";
-    avatar.textContent = role === "bot" ? "🤖" : "🧑";
+    avatar.textContent = role === "bot" ? "A" : "U";
 
     const inner = document.createElement("div");
 
@@ -344,19 +343,19 @@ Or click a college pill above to get started!
       if (intent && intent !== "general") {
         const t = document.createElement("span");
         t.className = "tag intent";
-        t.textContent = "🔍 " + intent;
+        t.textContent = intent;
         tags.appendChild(t);
       }
       if (college) {
         const c = document.createElement("span");
         c.className = "tag college";
-        c.textContent = "🏫 " + college;
+        c.textContent = college;
         tags.appendChild(c);
       }
       if (userRank) {
         const r = document.createElement("span");
         r.className = "tag rank";
-        r.textContent = "🏅 Rank " + userRank.toLocaleString();
+        r.textContent = "Rank " + userRank.toLocaleString();
         tags.appendChild(r);
       }
       inner.appendChild(tags);
@@ -374,7 +373,7 @@ Or click a college pill above to get started!
     el.className = "msg bot";
     el.id = "typing";
     el.innerHTML = `
-      <div class="avatar">🤖</div>
+      <div class="avatar">A</div>
       <div class="bubble typing-indicator">
         <span></span><span></span><span></span>
       </div>`;
@@ -414,7 +413,7 @@ Or click a college pill above to get started!
     } catch (err) {
       removeTyping();
       appendMessage("bot",
-        "⚠️ Sorry, I couldn't connect to the server. Please make sure the backend is running on http://localhost:8000",
+        "Sorry, I couldn't connect to the server. Please make sure the backend is running on http://localhost:8000",
         null, null, null
       );
     } finally {

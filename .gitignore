@@ -1,37 +1,19 @@
-# 🔐 Environment variables (VERY IMPORTANT)
-.env
 
-# 📦 Python cache
+.env
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-# 🧠 Chroma DB / vector DB
 chroma_db/
-
-# 📊 Dataset files (large / not needed in repo)
 *.csv
 *.json
-
-# 🖥️ Virtual environments
 venv/
 env/
-
-# 📁 OS files
 .DS_Store
 Thumbs.db
-
-# 📦 Node modules (frontend)
 node_modules/
-
-# 🧾 Logs
 *.log
-
-# 🔑 Secret/config files
 config.py
 secrets.json
-
-# 🧪 Temporary files
 *.tmp
 *.bak

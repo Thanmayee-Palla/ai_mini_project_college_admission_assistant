@@ -2,7 +2,7 @@
 
 An AI-powered RAG chatbot that answers any question about college admissions in India — eligibility, documents, deadlines, fees, cutoff ranks, step-by-step checklists, and more.
 
-Powered by: LangGraph · ChromaDB · SentenceTransformers · Groq (LLaMA 3.1) · FastAPI
+LangGraph · ChromaDB · SentenceTransformers · Groq (LLaMA 3.1) · FastAPI
 
 ---
 
