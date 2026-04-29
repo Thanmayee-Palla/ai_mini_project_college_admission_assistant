@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>College Admission Assistant</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary:    #1a3a6b;
+      --accent:     #f5a623;
+      --light:      #e8f0fb;
+      --bg:         #f4f6fb;
+      --white:      #ffffff;
+      --bot-bg:     #eef2fc;
+      --user-bg:    #1a3a6b;
+      --text:       #1c2440;
+      --muted:      #7a8499;
+      --border:     #d0d8e8;
+      --radius:     14px;
+      --shadow:     0 4px 24px rgba(26,58,107,0.10);
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header */
+    header {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
+      color: var(--white);
+      padding: 0;
+      box-shadow: 0 2px 12px rgba(26,58,107,0.18);
+    }
+    .header-inner {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-logo {
+      width: 52px; height: 52px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+    }
+    .header-text h1 { font-size: 1.22rem; font-weight: 700; letter-spacing: 0.01em; }
+    .header-text p  { font-size: 0.82rem; opacity: 0.82; margin-top: 2px; }
+
+    /* Pill Bar */
+    .pill-bar {
+      max-width: 880px; width: 100%;
+      margin: 14px auto 0;
+      padding: 0 16px;
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .pill {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-weight: 500;
+    }
+    .pill:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
+
+    /* Chat Window */
+    .chat-wrapper {
+      max-width: 880px;
+      width: 100%;
+      margin: 16px auto 0;
+      padding: 0 16px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    #chat-box {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px 16px;
+      flex: 1;
+      min-height: 420px;
+      max-height: 58vh;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Messages */
+    .msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.25s ease; }
+    .msg.user  { flex-direction: row-reverse; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .msg.bot  .avatar { background: var(--light); }
+    .msg.user .avatar { background: var(--accent); }
+
+    .bubble {
+      max-width: 75%;
+      padding: 11px 16px;
+      border-radius: var(--radius);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+    .msg.bot  .bubble { background: var(--bot-bg); color: var(--text); border-bottom-left-radius: 4px; }
+    .msg.user .bubble { background: var(--user-bg); color: var(--white); border-bottom-right-radius: 4px; }
+
+    /* Tags */
+    .meta-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .tag {
+      font-size: 0.7rem;
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .tag.intent  { background: #e0e7ff; color: #3730a3; }
+    .tag.college { background: #dcfce7; color: #166534; }
+    .tag.rank    { background: #fef3c7; color: #92400e; }
+
+    /* Typing Indicator */
+    .typing-indicator { display: flex; gap: 5px; padding: 10px 14px; }
+    .typing-indicator span {
+      width: 8px; height: 8px;
+      background: var(--muted);
+      border-radius: 50%;
+      animation: bounce 1.2s infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+    }
+
+    /* Input Row */
+    .input-row { display: flex; gap: 10px; margin-top: 12px; }
+    #user-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 30px;
+      font-size: 0.93rem;
+      outline: none;
+      color: var(--text);
+      transition: border 0.18s;
+      background: var(--white);
+    }
+    #user-input:focus { border-color: var(--primary); }
+
+    #send-btn {
+      background: var(--primary);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      padding: 12px 24px;
+      font-size: 0.93rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s;
+    }
+    #send-btn:hover    { background: #2c5282; }
+    #send-btn:disabled { background: var(--muted); cursor: not-allowed; }
+
+    /* Quick Prompts */
+    .quick-prompts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .qp {
+      background: var(--light);
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      font-weight: 500;
+    }
+    .qp:hover { background: var(--primary); color: var(--white); }
+
+    /* Checklist styling inside bubbles */
+    .bubble ul { padding-left: 18px; margin-top: 4px; }
+    .bubble li { margin-bottom: 4px; }
+
+    footer {
+      max-width: 880px; width: 100%;
+      margin: 0 auto;
+      padding: 8px 16px 16px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    #chat-box::-webkit-scrollbar { width: 5px; }
+    #chat-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-logo">🎓</div>
+    <div class="header-text">
+      <h1>College Admission Assistant</h1>
+      <p>AI-powered guide for eligibility, documents, fees, cutoffs &amp; step-by-step admission</p>
+    </div>
+  </div>
+</header>
+
+<!-- College quick-select pills -->
+<div class="pill-bar">
+  <span class="pill" onclick="insertCollege('IIT Delhi')">IIT Delhi</span>
+  <span class="pill" onclick="insertCollege('IIT Bombay')">IIT Bombay</span>
+  <span class="pill" onclick="insertCollege('VIT Vellore')">VIT Vellore</span>
+  <span class="pill" onclick="insertCollege('SRM Institute')">SRM Institute</span>
+  <span class="pill" onclick="insertCollege('Anna University')">Anna University</span>
+  <span class="pill" onclick="insertCollege('BITS Pilani')">BITS Pilani</span>
+  <span class="pill" onclick="insertCollege('NIT Trichy')">NIT Trichy</span>
+  <span class="pill" onclick="insertCollege('Amity University')">Amity University</span>
+  <span class="pill" onclick="insertCollege('Delhi University')">Delhi University</span>
+  <span class="pill" onclick="insertCollege('Jadavpur University')">Jadavpur University</span>
+  <span class="pill" onclick="insertCollege('Christ University')">Christ University</span>
+  <span class="pill" onclick="insertCollege('Mumbai University')">Mumbai University</span>
+</div>
+
+<div class="chat-wrapper">
+  <div id="chat-box">
+    <div class="msg bot">
+      <div class="avatar">🤖</div>
+      <div>
+        <div class="bubble">
+👋 Hello! I'm your College Admission Assistant.
+
+I can help you with:
+• 📋 Documents required for admission (Engineering / Medical / Commerce / Arts)
+• 💰 Fee structures — UG, PG &amp; scholarship info
+• ✅ Eligibility criteria &amp; entrance exam requirements
+• 🎓 Courses &amp; branches offered at each college
+• 📈 Cutoff ranks — JEE, NEET, CUET, CET
+• 🏆 Will my rank get me admitted? Just ask!
+• 🚶 Step-by-step admission checklist
+• ⭐ Placement ratings, faculty &amp; infrastructure scores
+• 📞 Contact details &amp; application deadlines
+
+Try: "My JEE rank is 8500 — can I get CSE at NIT Trichy?"
+Or click a college pill above to get started!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Prompts -->
+  <div class="quick-prompts">
+    <span class="qp" onclick="sendQuick('What documents are needed for VIT Vellore admission?')">📋 VIT docs</span>
+    <span class="qp" onclick="sendQuick('What are the fees at IIT Delhi?')">💰 IIT Delhi fees</span>
+    <span class="qp" onclick="sendQuick('My JEE rank is 5000, can I get CSE at NIT Trichy?')">📈 Rank check NIT</span>
+    <span class="qp" onclick="sendQuick('What is the NEET cutoff for MBBS at SRM Institute?')">🏥 NEET cutoff SRM</span>
+    <span class="qp" onclick="sendQuick('How do I apply for BITS Pilani admission?')">🚶 BITS process</span>
+    <span class="qp" onclick="sendQuick('What are the placements at Anna University?')">🏢 Anna placements</span>
+    <span class="qp" onclick="sendQuick('Give me the admission checklist for engineering')">✅ Admission checklist</span>
+    <span class="qp" onclick="sendQuick('Which college should I choose with JEE rank 12000?')">🎓 Best college for rank</span>
+  </div>
+
+  <!-- Input Row -->
+  <div class="input-row">
+    <input
+      id="user-input"
+      type="text"
+      placeholder="Ask about rank, fees, documents, eligibility… or just type your rank!"
+      autocomplete="off"
+      onkeydown="if(event.key==='Enter') sendMessage()"
+    />
+    <button id="send-btn" onclick="sendMessage()">Send ➤</button>
+  </div>
+</div>
+
+<footer>
+  ⚠️ Information is based on a curated dataset of 350 admission records across 12 colleges.
+  Always verify with official college websites and admission portals for the latest updates.
+</footer>
+
+<script>
+  const API_URL = "http://localhost:8000/chat";
+  let sessionId = null;
+
+  function insertCollege(name) {
+    const input = document.getElementById("user-input");
+    input.value = input.value ? input.value + " " + name : "Tell me about " + name;
+    input.focus();
+  }
+
+  function sendQuick(text) {
+    document.getElementById("user-input").value = text;
+    sendMessage();
+  }
+
+  function appendMessage(role, text, intent, college, userRank) {
+    const box = document.getElementById("chat-box");
+
+    const wrapper = document.createElement("div");
+    wrapper.className = `msg ${role}`;
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    avatar.textContent = role === "bot" ? "🤖" : "🧑";
+
+    const inner = document.createElement("div");
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = text;
+
+    inner.appendChild(bubble);
+
+    if (role === "bot" && (intent || college || userRank)) {
+      const tags = document.createElement("div");
+      tags.className = "meta-tags";
+      if (intent && intent !== "general") {
+        const t = document.createElement("span");
+        t.className = "tag intent";
+        t.textContent = "🔍 " + intent;
+        tags.appendChild(t);
+      }
+      if (college) {
+        const c = document.createElement("span");
+        c.className = "tag college";
+        c.textContent = "🏫 " + college;
+        tags.appendChild(c);
+      }
+      if (userRank) {
+        const r = document.createElement("span");
+        r.className = "tag rank";
+        r.textContent = "🏅 Rank " + userRank.toLocaleString();
+        tags.appendChild(r);
+      }
+      inner.appendChild(tags);
+    }
+
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(inner);
+    box.appendChild(wrapper);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function showTyping() {
+    const box = document.getElementById("chat-box");
+    const el = document.createElement("div");
+    el.className = "msg bot";
+    el.id = "typing";
+    el.innerHTML = `
+      <div class="avatar">🤖</div>
+      <div class="bubble typing-indicator">
+        <span></span><span></span><span></span>
+      </div>`;
+    box.appendChild(el);
+    box.scrollTop = box.scrollHeight;
+  }
+
+  function removeTyping() {
+    const el = document.getElementById("typing");
+    if (el) el.remove();
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById("user-input");
+    const btn   = document.getElementById("send-btn");
+    const text  = input.value.trim();
+    if (!text) return;
+
+    input.value = "";
+    btn.disabled = true;
+    appendMessage("user", text);
+    showTyping();
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ session_id: sessionId, message: text }),
+      });
+
+      if (!res.ok) throw new Error("Server error: " + res.status);
+      const data = await res.json();
+      sessionId = data.session_id;
+
+      removeTyping();
+      appendMessage("bot", data.answer, data.intent, data.college_filter, data.user_rank);
+    } catch (err) {
+      removeTyping();
+      appendMessage("bot",
+        "⚠️ Sorry, I couldn't connect to the server. Please make sure the backend is running on http://localhost:8000",
+        null, null, null
+      );
+    } finally {
+      btn.disabled = false;
+      input.focus();
+    }
+  }
+</script>
+</body>
+</html>
