@@ -35,6 +35,12 @@ def match_college(query: str, known_colleges: list) -> tuple:
     query_tokens = _tokenise(query)
     scores = []
 
+    query_lower = query.lower()
+    for name in known_colleges:
+        name_lower = name.lower()
+        if name_lower in query_lower:
+            return name, 100.0, False
+
     for name in known_colleges:
         fuzzy_score = fuzz.token_set_ratio(query.lower(), name.lower())
         name_tokens = _tokenise(name)
