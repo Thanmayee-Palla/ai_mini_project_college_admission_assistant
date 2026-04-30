@@ -7,249 +7,271 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --primary:    #1a3a6b;
-      --accent:     #f5a623;
-      --light:      #e8f0fb;
-      --bg:         #f4f6fb;
-      --white:      #ffffff;
-      --bot-bg:     #eef2fc;
-      --user-bg:    #1a3a6b;
-      --text:       #1c2440;
-      --muted:      #7a8499;
-      --border:     #d0d8e8;
-      --radius:     14px;
-      --shadow:     0 4px 24px rgba(26,58,107,0.10);
+      --bg: #eef3f6;
+      --surface: #ffffff;
+      --surface-soft: #f9fbfc;
+      --text: #172b4d;
+      --muted: #6b7b8b;
+      --primary: #3c7f7c;
+      --accent: #c6864d;
+      --border: #d6dee4;
+      --radius: 24px;
+      --shadow: 0 18px 40px rgba(108, 119, 134, 0.12);
+      --shadow-soft: 0 10px 28px rgba(108, 119, 134, 0.07);
     }
 
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(180deg, #f2f6f9 0%, var(--bg) 100%);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
+      padding: 28px 16px 36px;
+      color: var(--text);
     }
 
-    /* Header */
+    .main-card {
+      width: min(760px, 100%);
+      background: var(--surface);
+      border-radius: 28px;
+      padding: 20px 20px 18px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(108, 119, 134, 0.12);
+      margin-bottom: 18px;
+    }
+
     header {
       width: 100%;
-      background: linear-gradient(135deg, var(--primary) 0%, #2c5282 100%);
-      color: var(--white);
+      background: transparent;
+      border: none;
       padding: 0;
-      box-shadow: 0 2px 12px rgba(26,58,107,0.18);
+      margin-bottom: 18px;
     }
     .header-inner {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 18px 24px;
       display: flex;
       align-items: center;
       gap: 16px;
+      flex-wrap: wrap;
     }
     .header-logo {
-      width: 52px; height: 52px;
-      background: var(--accent);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      background: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(60, 127, 124, 0.18);
       flex-shrink: 0;
     }
-    .header-text h1 { font-size: 1.22rem; font-weight: 700; letter-spacing: 0.01em; }
-    .header-text p  { font-size: 0.82rem; opacity: 0.82; margin-top: 2px; }
-
-    /* Pill Bar */
-    .pill-bar {
-      max-width: 880px; width: 100%;
-      margin: 14px auto 0;
-      padding: 0 16px;
-      display: flex; flex-wrap: wrap; gap: 8px;
+    .header-text h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
     }
-    .pill {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 0.78rem;
-      color: var(--primary);
-      cursor: pointer;
-      transition: all 0.18s;
-      font-weight: 500;
+    .header-text p {
+      max-width: 620px;
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0;
     }
-    .pill:hover { background: var(--primary); color: var(--white); border-color: var(--primary); }
 
-    /* Chat Window */
+
     .chat-wrapper {
-      max-width: 880px;
       width: 100%;
-      margin: 16px auto 0;
-      padding: 0 16px 16px;
-      flex: 1;
       display: flex;
       flex-direction: column;
+      gap: 16px;
+      margin: 0;
     }
     #chat-box {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
       box-shadow: var(--shadow);
-      padding: 20px 16px;
-      flex: 1;
+      padding: 22px;
       min-height: 420px;
-      max-height: 58vh;
+      max-height: 62vh;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
+      gap: 18px;
+    }
+
+    .msg {
+      display: flex;
       gap: 14px;
+      align-items: flex-start;
+      animation: fadeUp 0.22s ease;
     }
-
-    /* Messages */
-    .msg { display: flex; gap: 10px; align-items: flex-start; animation: fadeUp 0.25s ease; }
-    .msg.user  { flex-direction: row-reverse; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+    .msg.user { flex-direction: row-reverse; }
 
     .avatar {
-      width: 36px; height: 36px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
+      display: grid;
+      place-items: center;
       font-size: 18px;
+      font-weight: 700;
+      color: #ffffff;
       flex-shrink: 0;
     }
-    .msg.bot  .avatar { background: var(--light); }
+    .msg.bot .avatar { background: #4f7a99; }
     .msg.user .avatar { background: var(--accent); }
 
     .bubble {
-      max-width: 75%;
-      padding: 11px 16px;
-      border-radius: var(--radius);
-      font-size: 0.92rem;
-      line-height: 1.6;
+      max-width: 74%;
+      padding: 16px 18px;
+      border-radius: 28px;
+      font-size: 0.98rem;
+      line-height: 1.75;
       white-space: pre-wrap;
+      box-shadow: 0 6px 22px rgba(16, 42, 67, 0.05);
     }
-    .msg.bot  .bubble { background: var(--bot-bg); color: var(--text); border-bottom-left-radius: 4px; }
-    .msg.user .bubble { background: var(--user-bg); color: var(--white); border-bottom-right-radius: 4px; }
+    .msg.bot .bubble {
+      background: var(--surface-soft);
+      color: var(--text);
+      border-bottom-left-radius: 12px;
+    }
+    .msg.user .bubble {
+      background: linear-gradient(135deg, #ffedd5, #ffe2bb);
+      color: #1f2937;
+      border-bottom-right-radius: 12px;
+    }
 
-    /* Tags */
-    .meta-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .meta-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
     .tag {
-      font-size: 0.7rem;
-      padding: 2px 9px;
-      border-radius: 12px;
+      font-size: 0.76rem;
+      padding: 6px 10px;
+      border-radius: 999px;
       font-weight: 600;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
-    .tag.intent  { background: #e0e7ff; color: #3730a3; }
-    .tag.college { background: #dcfce7; color: #166534; }
-    .tag.rank    { background: #fef3c7; color: #92400e; }
+    .tag.intent { background: rgba(61, 98, 130, 0.12); color: #19486d; }
+    .tag.college { background: rgba(100, 189, 168, 0.16); color: #145d45; }
+    .tag.rank { background: rgba(234, 155, 103, 0.18); color: #8f3d0c; }
 
-    /* Typing Indicator */
-    .typing-indicator { display: flex; gap: 5px; padding: 10px 14px; }
+    .typing-indicator {
+      display: flex;
+      gap: 6px;
+      padding: 12px 14px;
+      background: rgba(16, 42, 67, 0.04);
+      border-radius: 22px;
+    }
     .typing-indicator span {
-      width: 8px; height: 8px;
+      width: 9px;
+      height: 9px;
       background: var(--muted);
       border-radius: 50%;
       animation: bounce 1.2s infinite;
     }
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce {
-      0%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-8px); }
-    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.18s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.34s; }
 
-    /* Input Row */
-    .input-row { display: flex; gap: 10px; margin-top: 12px; }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+      align-items: center;
+    }
     #user-input {
       flex: 1;
-      padding: 12px 16px;
-      border: 1.5px solid var(--border);
-      border-radius: 30px;
-      font-size: 0.93rem;
-      outline: none;
+      min-height: 54px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 0 20px;
+      font-size: 1rem;
       color: var(--text);
-      transition: border 0.18s;
-      background: var(--white);
+      outline: none;
+      background: var(--surface);
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    #user-input:focus { border-color: var(--primary); }
+    #user-input:focus {
+      border-color: rgba(39, 95, 127, 0.45);
+      box-shadow: 0 0 0 4px rgba(39, 95, 127, 0.08);
+    }
 
     #send-btn {
-      background: var(--primary);
-      color: var(--white);
       border: none;
-      border-radius: 30px;
-      padding: 12px 24px;
-      font-size: 0.93rem;
-      font-weight: 600;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--primary), #3f7f9a);
+      color: #ffffff;
+      padding: 0 24px;
+      min-height: 54px;
+      font-size: 1rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.18s;
+      box-shadow: 0 14px 25px rgba(39, 95, 127, 0.18);
+      transition: transform 0.18s, filter 0.18s;
     }
-    #send-btn:hover    { background: #2c5282; }
-    #send-btn:disabled { background: var(--muted); cursor: not-allowed; }
+    #send-btn:hover { transform: translateY(-1px); filter: brightness(1.03); }
+    #send-btn:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; }
 
-    /* Quick Prompts */
-    .quick-prompts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .quick-prompts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
     .qp {
-      background: var(--light);
-      border: 1.5px solid var(--primary);
-      color: var(--primary);
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 0.78rem;
+      width: 100%;
+      text-align: left;
+      background: #ffffff;
+      border: 1px solid rgba(108, 119, 134, 0.14);
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      color: var(--text);
       cursor: pointer;
-      transition: all 0.18s;
-      font-weight: 500;
+      transition: transform 0.18s, border-color 0.18s, background 0.18s;
+      font-weight: 600;
+      box-shadow: 0 12px 24px rgba(108, 119, 134, 0.06);
     }
-    .qp:hover { background: var(--primary); color: var(--white); }
+    .qp:hover {
+      transform: translateY(-1px);
+      background: rgba(60, 127, 124, 0.1);
+      border-color: rgba(60, 127, 124, 0.2);
+    }
 
-    /* Checklist styling inside bubbles */
-    .bubble ul { padding-left: 18px; margin-top: 4px; }
-    .bubble li { margin-bottom: 4px; }
+    .bubble ul { padding-left: 18px; margin-top: 10px; }
+    .bubble li { margin-bottom: 6px; }
 
     footer {
-      max-width: 880px; width: 100%;
+      width: min(760px, 100%);
       margin: 0 auto;
-      padding: 8px 16px 16px;
-      font-size: 0.72rem;
+      padding: 16px 18px 0;
+      font-size: 0.84rem;
       color: var(--muted);
       text-align: center;
     }
 
-    #chat-box::-webkit-scrollbar { width: 5px; }
-    #chat-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    #chat-box::-webkit-scrollbar { width: 7px; }
+    #chat-box::-webkit-scrollbar-thumb { background: rgba(39,95,127,0.18); border-radius: 999px; }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="header-logo">C</div>
-    <div class="header-text">
-      <h1>College Admission Assistant</h1>
-      <p>Intelligent guide for eligibility, documents, fees, cutoffs &amp; admission processes</p>
-    </div>
-  </div>
-</header>
+  <div class="main-card">
+    <header>
+      <div class="header-inner">
+        <div class="header-logo">C</div>
+        <div class="header-text">
+          <h1>College Admission Assistant</h1>
+          <p>Ask about rank, fees, documents, or eligibility.</p>
+        </div>
+      </div>
+    </header>
 
-<!-- College quick-select pills -->
-<div class="pill-bar">
-  <span class="pill" onclick="insertCollege('IIT Delhi')">IIT Delhi</span>
-  <span class="pill" onclick="insertCollege('IIT Bombay')">IIT Bombay</span>
-  <span class="pill" onclick="insertCollege('VIT Vellore')">VIT Vellore</span>
-  <span class="pill" onclick="insertCollege('SRM Institute')">SRM Institute</span>
-  <span class="pill" onclick="insertCollege('Anna University')">Anna University</span>
-  <span class="pill" onclick="insertCollege('BITS Pilani')">BITS Pilani</span>
-  <span class="pill" onclick="insertCollege('NIT Trichy')">NIT Trichy</span>
-  <span class="pill" onclick="insertCollege('Amity University')">Amity University</span>
-  <span class="pill" onclick="insertCollege('Delhi University')">Delhi University</span>
-  <span class="pill" onclick="insertCollege('Jadavpur University')">Jadavpur University</span>
-  <span class="pill" onclick="insertCollege('Christ University')">Christ University</span>
-  <span class="pill" onclick="insertCollege('Mumbai University')">Mumbai University</span>
-</div>
-
-<div class="chat-wrapper">
+    <div class="chat-wrapper">
   <div id="chat-box">
     <div class="msg bot">
       <div class="avatar">A</div>
